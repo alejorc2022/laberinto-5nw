@@ -18,10 +18,14 @@ pathTexture.src = 'https://iili.io/FurlViG.png';
 const mouseTexture = new Image();
 mouseTexture.src = 'https://iili.io/Fug9Qa9.png';
 const cheeseTexture = new Image();
-cheeseTexture.src = 'https://iili.io/Fug9N4I.png'; 
+cheeseTexture.src = 'https://iili.io/F0fd0qx.png'; 
+const parcialIconUrl = "https://iili.io/F0f4Lx9.png";
 
 let wallTextureLoaded = false, pathTextureLoaded = false, mouseTextureLoaded = false;
 let cheeseTextureLoaded = false;
+
+let tiemposParciales = []; // Array para almacenar los tiempos de cada nivel
+let tiempoInicioNivel = null; // Marca de tiempo al iniciar cada nivel
 
 wallTexture.onload = () => { wallTextureLoaded = true; drawMaze(); }
 pathTexture.onload = () => { pathTextureLoaded = true; drawMaze(); }
@@ -83,6 +87,87 @@ const laberintos = [
         [4,0,4,0,0,0,0,4,4,0,0,0,0,0,0,0,0,0,0,0,4,4,4,4,4],
         [4,0,4,0,4,4,0,4,4,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
         [4,3,0,0,4,4,0,3,0,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4]
+    ],
+    // Laberinto 3
+    [
+        [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,4,4,4,4,4,0,0,3,0,0,0,0,0,3,0,0,0,0,0,0,0,0,3,4],
+        [4,4,4,4,4,0,3,3,0,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,4,4,4,0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,4,4,0,0,3,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,9],
+        [4,4,0,0,3,0,4,4,4,4,4,0,0,0,0,4,4,4,4,4,4,4,0,0,4],
+        [4,4,0,3,0,4,4,4,4,4,0,4,3,3,0,0,4,4,4,4,4,0,0,3,4],
+        [4,0,3,0,0,4,4,4,4,4,0,0,3,3,0,0,4,4,4,4,4,0,0,3,4],
+        [4,0,4,0,4,4,4,4,4,4,4,0,4,0,0,4,4,4,4,4,4,4,0,0,4],
+        [4,0,4,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        [1,0,4,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,0,4,0,4,4,4,4,3,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,0,4,0,4,4,4,4,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,0,0,0,0,4,4,4,4,0,3,0,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,4,0,3,0,4,4,4,4,0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,4,0,0,0,0,4,4,4,4,0,0,0,0,0,0,4,4,4,4,4,0,0,0,4],
+        [4,4,4,0,3,3,0,4,4,4,4,0,0,0,4,4,0,3,0,0,3,0,0,0,4],
+        [4,4,4,4,0,0,0,0,4,4,4,4,4,3,0,0,0,0,0,0,0,0,0,0,4],
+        [4,4,4,4,4,3,3,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,4,0,4],
+        [4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4],
+        [4,4,4,4,4,4,4,4,3,3,0,0,0,4,4,4,4,4,4,4,4,0,0,0,4],
+        [4,4,4,4,4,4,4,4,4,4,4,4,4,4,3,3,0,0,0,0,0,0,0,0,4],
+        [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4]
+    ],
+    // Laberinto 4
+    [
+        [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,0,0,0,0,0,0,0,0,0,0,0,3,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,0,4,4,4,4,4,4,4,0,0,4,0,0,4,4,4,4,4,4,4,4,4,4,4],
+        [1,0,4,4,4,4,4,4,0,0,4,4,4,0,0,4,4,4,4,4,4,4,4,4,4],
+        [4,4,4,4,4,4,4,3,0,4,4,4,4,4,0,3,4,4,4,4,4,4,4,4,4],
+        [4,4,4,4,4,4,0,0,4,4,4,4,4,4,4,0,0,4,4,4,4,4,4,4,4],
+        [4,4,4,4,4,0,0,4,4,4,4,4,4,4,4,4,0,0,4,4,4,4,4,4,4],
+        [4,4,4,4,3,0,0,0,0,0,0,0,0,0,0,0,0,0,3,4,4,4,4,4,4],
+        [4,4,4,0,0,4,4,4,4,4,4,4,4,4,4,4,4,4,0,0,4,4,4,4,4],
+        [4,4,0,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0,0,4,4,4,4],
+        [4,3,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0,3,4,4,4],
+        [4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9],
+        [4,4,4,4,4,4,0,4,4,4,4,4,4,4,4,4,0,0,4,4,4,4,4,4,4],
+        [4,4,4,4,4,4,0,4,4,4,4,4,4,4,4,4,4,0,0,4,4,4,4,4,4],
+        [4,4,4,4,4,4,0,4,4,4,4,4,4,4,4,4,4,4,0,0,4,4,4,4,4],
+        [4,4,4,4,4,4,0,4,4,4,4,4,4,4,4,4,4,0,0,4,4,4,4,4,4],
+        [4,4,4,4,4,4,0,0,0,0,0,3,0,0,0,0,0,0,4,4,4,4,4,4,4],
+        [4,4,4,4,4,4,0,4,4,4,4,4,4,4,4,4,4,0,4,4,4,4,4,4,4],
+        [4,4,4,4,4,4,0,4,4,4,4,4,4,4,4,4,4,0,4,4,4,4,4,4,4],
+        [4,4,4,4,4,4,0,4,4,4,4,4,4,4,4,4,4,0,4,4,4,4,4,4,4],
+        [4,4,4,4,4,4,0,4,4,4,4,4,4,4,4,4,4,0,4,4,4,4,4,4,4],
+        [4,4,4,4,4,4,3,4,4,4,4,4,4,4,4,4,4,3,4,4,4,4,4,4,4],
+        [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4]
+    ],
+    // Laberinto 5
+    [
+        [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+        [4,4,4,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,4],
+        [4,4,4,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0,4],
+        [4,4,4,0,4,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,4,4,0,4],
+        [4,4,4,0,4,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0,4,4,0,4],
+        [4,4,4,0,4,0,4,3,0,0,0,0,0,0,0,0,0,0,3,4,0,4,4,0,4],
+        [4,4,4,0,4,0,4,0,4,4,4,4,4,4,4,4,4,4,0,4,0,4,4,0,4],
+        [4,4,4,0,4,0,4,0,4,3,0,0,0,0,0,0,3,4,0,4,0,4,4,0,4],
+        [4,4,4,0,4,0,4,0,4,0,4,4,4,4,4,4,0,4,0,4,0,4,4,0,4],
+        [4,4,4,0,4,0,4,0,4,0,4,3,0,0,3,4,0,4,0,4,0,4,4,0,4],
+        [4,4,4,0,4,0,4,0,4,0,4,0,4,4,0,4,0,4,0,4,0,4,4,0,4],
+        [4,4,4,0,4,0,4,0,4,0,4,3,3,4,0,4,0,4,0,4,0,4,4,0,4],
+        [1,0,0,0,0,0,0,0,0,0,4,3,3,4,0,0,0,0,0,0,0,0,0,0,9],
+        [4,0,4,0,4,0,4,0,4,0,4,4,4,4,0,4,0,4,0,4,0,4,4,0,4],
+        [4,0,4,0,4,0,4,0,4,3,0,0,0,0,3,4,0,4,0,4,0,4,4,0,4],
+        [4,0,4,0,4,0,4,0,4,4,4,4,4,4,4,4,0,4,0,4,0,4,4,0,4],
+        [4,0,4,0,4,0,4,3,0,0,0,0,0,0,0,0,3,4,0,4,0,4,4,0,4],
+        [4,0,4,0,4,0,4,4,4,4,4,4,4,4,4,4,4,4,0,4,0,4,4,0,4],
+        [4,0,4,0,4,3,0,0,0,0,0,0,0,0,0,0,0,0,3,4,0,4,4,0,4],
+        [4,0,4,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0,4,4,0,4],
+        [4,0,4,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,4,4,0,4],
+        [4,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0,4],
+        [4,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,4],
         [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4]
     ]
 ];
@@ -191,10 +276,22 @@ function drawMaze() {
 }
 
 // --- Panel informativo ---
-function updateInfoPanel(msg = '') {
-    infoLevel.textContent = `Nivel: ${nivelActual + 1} / ${laberintos.length}`;
-    infoTime.textContent = `Tiempo: ${formatTime(elapsedTime)}`;
-    infoMsg.innerHTML = `Quesos: ${quesosComidos} | Puntos: ${puntaje}<br>${msg}`;
+function updateInfoPanel() {
+    
+    document.getElementById('infoNivel').textContent = nivelActual + 1;
+    document.getElementById('infoTiempo').textContent = formatTime(elapsedTime);
+    document.getElementById('infoQuesos').textContent = quesosComidos;
+    document.getElementById('infoPuntos').textContent = puntaje;
+
+    // Panel inferior: tiempos parciales
+    const bottomPanel = document.getElementById('infoBottomPanel');
+    bottomPanel.innerHTML = '';
+    for (const element of tiemposParciales) {
+        const cell = document.createElement('div');
+        cell.className = 'info-cell';
+        cell.innerHTML = `<img src="${parcialIconUrl}" alt="Parcial" width="32" height="32" style="vertical-align:middle;margin-right:4px;">${formatTime(element)}`;
+        bottomPanel.appendChild(cell);
+    }
 }
 
 function formatTime(ms) {
@@ -255,6 +352,7 @@ function moveMouse(direction) {
     ) {
         nivelActual++;
         if (nivelActual < laberintos.length) {
+            tiemposParciales.push(elapsedTime);
             mouse = encontrarPosicion(laberintos[nivelActual], 1);
             salidaActual = encontrarPosicion(laberintos[nivelActual], 9);
             quesosPorNivel[nivelActual] = contarQuesos(laberintos[nivelActual]);
@@ -308,6 +406,7 @@ document.addEventListener('keydown', (e) => {
 
 // Función de reinicio completo
 function resetGame() {
+    tiemposParciales = [];
     // Restaurar laberintos originales
     for (let i = 0; i < laberintos.length; i++) {
         laberintos[i] = JSON.parse(JSON.stringify(originalLaberintos[i]));
@@ -326,7 +425,7 @@ function resetGame() {
     quesosPorNivel = laberintos.map(contarQuesos);
     
     // Reiniciar interfaz
-    updateInfoPanel('');
+    updateInfoPanel();
     if (timerInterval) clearInterval(timerInterval);
     startTimer();
     drawMaze();

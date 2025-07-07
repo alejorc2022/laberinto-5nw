@@ -3,14 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Laberinto Responsive</title>
+    <title>Laberinto 5 Niveles</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="infoPanel">
-        <div id="infoLevel"></div>
-        <div id="infoTime"></div>
-        <div id="infoMsg"></div>
+        <div id="infoTopPanel" class="info-row">
+            <div class="info-cell">
+                <img src="https://iili.io/F0f4DKb.png" alt="Nivel" width="32" height="32">
+                <span id="infoNivel"></span>
+            </div>
+            <div class="info-cell">
+                <img src="https://iili.io/F0f4blj.png" alt="Tiempo" width="32" height="32">
+                <span id="infoTiempo"></span>
+            </div>
+            <div class="info-cell">
+                <img src="https://iili.io/F0f4Ziu.png" alt="Quesos" width="32" height="32">
+                <span id="infoQuesos"></span>
+            </div>
+            <div class="info-cell">
+                <img src="https://iili.io/F0f4QVe.png" alt="Puntos" width="32" height="32">
+                <span id="infoPuntos"></span>
+            </div>
+            </div>
+        <div id="infoBottomPanel" class="info-row">
+            <!-- Aquí se mostrarán los tiempos parciales -->
+        </div>
     </div>
     <div id="gamePanel">
         <canvas id="gameCanvas" width="480" height="480"></canvas>
